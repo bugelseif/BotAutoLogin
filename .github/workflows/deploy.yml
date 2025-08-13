@@ -1,0 +1,41 @@
+
+name: Deploy and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run build script
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Checkout bot.sh from repository
+        run: |
+          git clone --branch v1.1 https://github.com/botcity-dev/cicd-pipeline-utils.git
+          chmod +x cicd-pipeline-utils/scripts/bot.sh
+
+      - name: Deploy Bot
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          LOGIN: ${{ secrets.LOGIN }}
+          KEY: ${{ secrets.KEY }}
+        run: |
+          cicd-pipeline-utils/scripts/bot.sh deploy -version "1.0.1" -botFile "BotAutoLogin.zip" -botId "BotAutoLogin" -type "python" -repository "dev"
+
+      - name: Release Bot
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          LOGIN: ${{ secrets.LOGIN }}
+          KEY: ${{ secrets.KEY }}
+        run: |
+          cicd-pipeline-utils/scripts/bot.sh release -version "1.0.1" -botId "BotAutoLogin"
