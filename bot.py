@@ -3,7 +3,7 @@ from botcity.web import WebBot, Browser, By
 from webdriver_manager.firefox import GeckoDriverManager
 
 # Import de integração com BotCity Maestro SDK
-from botcity.maestro import *
+from botcity.maestro import BotMaestroSDK, AlertType, AutomationTaskFinishStatus
 
 # Desabilita erros enquanto não tem conexão com Orquestrador (para execução local)
 BotMaestroSDK.RAISE_NOT_CONNECTED = False

@@ -2,9 +2,10 @@
 name: Deploy and Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Lint with Ruff"]
+    types:
+      - completed
 
 jobs:
   build_and_deploy:
@@ -30,7 +31,7 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           KEY: ${{ secrets.KEY }}
         run: |
-          cicd-pipeline-utils/scripts/bot.sh deploy -version "1.0.1" -botFile "BotAutoLogin.zip" -botId "BotAutoLogin" -type "python" -repository "dev"
+          cicd-pipeline-utils/scripts/bot.sh deploy -version "1.0.2" -botFile "./BotAutoLogin.zip" -botId "BotAutoLogin" -type "python" -repository "dev"
 
       - name: Release Bot
         env:
@@ -38,4 +39,4 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           KEY: ${{ secrets.KEY }}
         run: |
-          cicd-pipeline-utils/scripts/bot.sh release -version "1.0.1" -botId "BotAutoLogin"
+          cicd-pipeline-utils/scripts/bot.sh release -version "1.0.2" -botId "BotAutoLogin"
