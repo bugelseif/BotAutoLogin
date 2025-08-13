@@ -94,6 +94,13 @@ def main():
         # Finaliza fechando o navegador
         bot.stop_browser()
 
+        maestro.alert(
+            task_id=execution.task_id,
+            title="Começando processo",
+            message="This is an info alert",
+            alert_type=AlertType.INFO
+        )
+
         maestro.finish_task(
             task_id=execution.task_id,
             status=AutomationTaskFinishStatus.SUCCESS,
